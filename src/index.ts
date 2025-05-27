@@ -1,1 +1,1 @@
-console.log('Hello, world!');
+console.log("This is the index file of the project. It serves as the entry point for the application.");
