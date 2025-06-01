@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { client } from './drizzle/db';
 import { user } from './routes/auth.routes';
 import { category } from './routes/category.route';
+import { budget } from './routes/budget.route';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.get('/health', (req, res) => {
 
 user(app);
 category(app);
+budget(app);
 
 // Database health check endpoint
 app.get('/db-health', async (req, res) => {
