@@ -9,7 +9,7 @@
     "build": "tsc",
     "generate": "drizzle-kit generate",
     "migrate": "tsx src/drizzle/migrate.ts",
-    "seed": "tsx src/Drizzle/seed.ts"
+    "seed": "tsx src/drizzle/seed.ts"
   },
   "keywords": [],
   "author": "",
