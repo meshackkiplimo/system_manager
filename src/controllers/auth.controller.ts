@@ -1,45 +1,57 @@
-import { Request, Response } from "express";
-import * as authService from "../services/auth.service";
+import { Request, Response } from 'express';
+import { TIUser } from '../drizzle/schema';
+import bcrypt from 'bcryptjs';
+import { createUserService, getUserByLoginService } from '../services/auth.service';
 
-export const registerUserController = async (req: Request, res: Response) => {
+export const createUserController = async (req: Request, res: Response) => {
     try {
-        const { username, email, password } = req.body;
+        const newUser: TIUser = req.body;
+        const password = newUser.password;
         
+        newUser.password = await bcrypt.hashSync(password, 10);
+        const createUser = await createUserService(newUser);
         
-        const user = await authService.registerUserService({ username, email, password });
+        if (!createUser) {
+            res.status(400).json({ message: "User creation failed" });
+            return;
+        }
         
-       
-        const { password: _, ...userWithoutPassword } = user;
-        
-        res.status(201).json({
-            message: "User registered successfully",
-            user: userWithoutPassword
+        res.status(200).json({
+            message: "User created successfully",
         });
     } catch (error) {
-        console.error("Registration error:", error);
-        res.status(500).json({ message: "Error registering user" });
+        console.error("Error in createUserController:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-};
+}
 
 export const loginUserController = async (req: Request, res: Response) => {
     try {
-        const { email, password } = req.body;
-
-        // Attempt login
-        const user = await authService.loginUserService(email, password);
-        if (!user) {
-            return res.status(401).json({ message: "Invalid credentials" });
+        const user: TIUser = req.body;
+        const existingUser = await getUserByLoginService(user);
+        
+        if (!existingUser) {
+            res.status(404).json({ message: "User not found" });
+            return;
         }
-
-        // Remove password from response
-        const { password: _, ...userWithoutPassword } = user;
+        
+        const isPasswordValid = bcrypt.compareSync(user.password, existingUser.password);
+        
+        if (!isPasswordValid) {
+            res.status(401).json({ message: "Invalid password" });
+            return;
+        }
         
         res.status(200).json({
             message: "Login successful",
-            user: userWithoutPassword
+            user: {
+                id: existingUser.id,
+                username: existingUser.username,
+                email: existingUser.email
+            }
         });
     } catch (error) {
-        console.error("Login error:", error);
-        res.status(500).json({ message: "Error during login" });
+        console.error("Error in loginUserController:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
-};
+}

@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import { client } from './drizzle/db';
+import { user } from './routes/auth.routes';
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ app.get('/health', (req, res) => {
     timestamp: new Date().toISOString() 
   });
 });
+
+
+user(app);
 
 // Database health check endpoint
 app.get('/db-health', async (req, res) => {
