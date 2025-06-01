@@ -1,10 +1,12 @@
 import { sql } from "drizzle-orm";
 import db from "../drizzle/db";
-import { CategoriesTable, TICategory, TSCategory } from "../drizzle/schema";
-
-
-
-
+import {
+    CategoriesTable,
+    BudgetsTable,
+    FinancesTable,
+    TICategory,
+    TSCategory
+} from "../drizzle/schema";
 
 
 export const createCategoriesService = async (categories:TICategory) => {
@@ -57,18 +59,47 @@ export const getCategoryByIdService = async (id: string) => {
 
 }
 
-export const updateCategoryService = async (id: string, category: TICategory) :Promise <TICategory | null>  => {
-    const updatedCategory = await db.update(CategoriesTable)
-        .set(category)
-        .where(sql`${CategoriesTable.id} = ${id}`)
-        .returning();
-    return updatedCategory[0] || null;
+export const updateCategoryService = async (id: string, category: Partial<TICategory>): Promise<TICategory | null> => {
+    try {
+        // Check if category exists
+        const existingCategory = await getCategoryByIdService(id);
+        if (!existingCategory) {
+            return null;
+        }
 
+        // Update only provided fields
+        const updatedCategory = await db.update(CategoriesTable)
+            .set({
+                ...existingCategory,
+                ...category
+            })
+            .where(sql`${CategoriesTable.id} = ${id}`)
+            .returning();
+
+        return updatedCategory[0] || null;
+    } catch (error) {
+        console.error("Error in updateCategoryService:", error);
+        throw error;
+    }
 }
 
 export const deleteCategoryService = async (id: string) => {
-    const deletedCategory = await db.delete(CategoriesTable)
-        .where(sql`${CategoriesTable.id} = ${id}`)
-        .returning();
-    return deletedCategory[0] || null;
+    try {
+        // First, delete all related finances
+        await db.delete(FinancesTable)
+            .where(sql`${FinancesTable.categoryId} = ${id}`);
+
+        // Then, delete all related budgets
+        await db.delete(BudgetsTable)
+            .where(sql`${BudgetsTable.categoryId} = ${id}`);
+
+        // Finally, delete the category
+        const deletedCategory = await db.delete(CategoriesTable)
+            .where(sql`${CategoriesTable.id} = ${id}`)
+            .returning();
+        return deletedCategory[0] || null;
+    } catch (error) {
+        console.error("Error in deleteCategoryService:", error);
+        throw error;
+    }
 }

@@ -69,22 +69,36 @@ export const getAllCategoriesController = async (req:Request, res:Response) => {
 
 export const updateCategoryController = async (req: Request, res: Response) => {
     try {
-        const category = req.params.id;
+        const categoryId = req.params.id;
         const updatedCategoryData = req.body;
-        const updatedCategory = await updateCategoryService(category, updatedCategoryData);
+
+        // Validate input data
+        if (!updatedCategoryData || (Object.keys(updatedCategoryData).length === 0)) {
+            res.status(400).json({ message: "No update data provided" });
+            return;
+        }
+
+        const updatedCategory = await updateCategoryService(categoryId, updatedCategoryData);
+        
         if (!updatedCategory) {
             res.status(404).json({ message: "Category not found" });
             return;
         }
+
         res.status(200).json({
             message: "Category updated successfully",
             category: updatedCategory
         });
-        
     } catch (error) {
         console.error("Error in updateCategoryController:", error);
-        res.status(500).json({ message: "Internal Server Error" });
-        
+        if (error instanceof Error) {
+            res.status(500).json({
+                message: "Internal Server Error",
+                error: error.message
+            });
+        } else {
+            res.status(500).json({ message: "Internal Server Error" });
+        }
     }
 }
 
