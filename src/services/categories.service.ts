@@ -33,17 +33,15 @@ export const getCategoriesByIdService = async (id: string) => {
 
 }
 
-export const getAllCategoriesService = async (categories:TSCategory) => {
+export const getAllCategoriesService = async () => {
     const result = await db.query.CategoriesTable.findMany({
         columns: {
             id: true,
             name: true,
             userId: true
-        },
-        where: sql`${CategoriesTable.id} = ${categories.id}`
+        }
     });
-    return result || null;
-
+    return result;
 }
 
 export const getCategoryByIdService = async (id: string) => {

@@ -49,21 +49,21 @@ export const getOneControllerById = async (req:Request, res:Response) => {
 
 
 export const getAllCategoriesController = async (req:Request, res:Response) => {
-
     try {
-        const categories = req.body;
-        const allCategories = await getAllCategoriesService(categories)
+        const allCategories = await getAllCategoriesService();
+        
         if (!allCategories || allCategories.length === 0) {
             res.status(404).json({ message: "No categories found" });
-            return 
+            return;
         }
+        
         res.status(200).json({
             message: "Categories retrieved successfully",
             categories: allCategories
         });
-        
     } catch (error) {
-        
+        console.error("Error in getAllCategoriesController:", error);
+        res.status(500).json({ message: "Internal Server Error" });
     }
 }
 
