@@ -5,6 +5,7 @@ import { user } from './routes/auth.routes';
 import { category } from './routes/category.route';
 import { budget } from './routes/budget.route';
 import { finance } from './routes/finance.route';
+import { task } from './routes/task.route';
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ user(app);
 category(app);
 budget(app);
 finance(app);
+task(app);
 
 // Database health check endpoint
 app.get('/db-health', async (req, res) => {
