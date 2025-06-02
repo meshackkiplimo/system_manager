@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "generate": "drizzle-kit generate",
@@ -19,12 +19,14 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/pg": "^8.15.2",
     "drizzle-kit": "^0.31.1",
+    "jest": "^29.7.0",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "@types/bcryptjs": "^3.0.0",
     "@types/express": "^5.0.2",
+    "@types/jest": "^29.5.14",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
