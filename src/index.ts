@@ -4,6 +4,7 @@ import { client } from './drizzle/db';
 import { user } from './routes/auth.routes';
 import { category } from './routes/category.route';
 import { budget } from './routes/budget.route';
+import { finance } from './routes/finance.route';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.get('/health', (req, res) => {
 user(app);
 category(app);
 budget(app);
+finance(app);
 
 // Database health check endpoint
 app.get('/db-health', async (req, res) => {
