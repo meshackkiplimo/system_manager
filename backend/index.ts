@@ -1,11 +1,11 @@
 import express from 'express';
 import dotenv from 'dotenv';
-import { client } from './drizzle/db';
-import { user } from './routes/auth.routes';
-import { category } from './routes/category.route';
-import { budget } from './routes/budget.route';
-import { finance } from './routes/finance.route';
-import { task } from './routes/task.route';
+import { client } from './src/drizzle/db';
+import { user } from './src/routes/auth.routes';
+import { category } from './src/routes/category.route';
+import { budget } from './src/routes/budget.route';
+import { finance } from './src/routes/finance.route';
+import { task } from './src/routes/task.route';
 
 dotenv.config();
 
