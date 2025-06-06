@@ -1,5 +1,5 @@
 
-import { getAllNotesSevice } from '@/services/notes.service';
+import { getAllNotesSevice, getOneNoteByIdService } from '@/services/notes.service';
 import { Request, Response } from 'express';
 
 
@@ -21,5 +21,15 @@ export const getAllNotesController = async (req:Request,res:Response) => {
     }
 
 
+   
     
+}
+
+export const getOneNoteByIdController = async (req:Request,res:Response) => {
+    const id = parseInt(req.params.id);
+    const note = await getOneNoteByIdService(id);
+    if (!note) {
+        return res.status(404).json({ message: "Note not found" });
+    }   
+    res.status(200).json({ message: "Fetched note successfully", data: note });
 }
