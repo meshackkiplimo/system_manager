@@ -6,6 +6,7 @@ import { category } from './src/routes/category.route';
 import { budget } from './src/routes/budget.route';
 import { finance } from './src/routes/finance.route';
 import { task } from './src/routes/task.route';
+import { note } from '@/routes/note.route';
 
 dotenv.config();
 
@@ -30,6 +31,7 @@ category(app);
 budget(app);
 finance(app);
 task(app);
+note(app)
 
 // Database health check endpoint
 app.get('/db-health', async (req, res) => {
