@@ -1,7 +1,7 @@
 import { sendMail } from "@/config/mailer";
 
 class EmailService {
-    async sendVerificationEmail(email:string,code:string){
+    async sendVerificationCode(email:string,code:string){
         const subject= "Email Verification"
         const message =`your verification code is ${code}. Please use this code to verify your email address.`
         const html = `

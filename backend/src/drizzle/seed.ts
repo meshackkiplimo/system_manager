@@ -17,43 +17,18 @@ async function seed() {
     console.log("......seeding started......");
 
     // Insert users
-    await db.insert(UsersTable).values([
-        {
-            username: "mesh",
-            email: "mesh@gmail.com",
-            password: "12345678"
-        },
-        {
-            username: "john",
-            email: "john@gmail.com",
-            password: "87654321"
-        },
-        {
-            username: "sarah",
-            email: "sarah@gmail.com",
-            password: "sarah123"
-        },
-        {
-            username: "david",
-            email: "david@gmail.com",
-            password: "david456"
-        },
-        {
-            username: "emma",
-            email: "emma@gmail.com",
-            password: "emma789"
-        },
-        {
-            username: "michael",
-            email: "michael@gmail.com",
-            password: "michael321"
-        },
-        {
-            username: "lisa",
-            email: "lisa@gmail.com",
-            password: "lisa654"
-        }
-    ]);
+   await db.insert(UsersTable).values([
+        { first_name: "Mesh", last_name: "Smith", username: "mesh", email: "jj@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "John", last_name: "Doe", username: "john", email: "doe@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "Sarah", last_name: "Connor", username: "sarah", email: "sss@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "David", last_name: "Wilson", username: "david", email: "david@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "Emma", last_name: "Brown", username: "emma", email: "emma@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "Michael", last_name: "Taylor", username: "michael", email: "michael@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "Lisa", last_name: "Anderson", username: "lisa", email: "lisa@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "James", last_name: "Martinez", username: "james", email: "james@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "Anna", last_name: "Garcia", username: "anna", email: "anna@gmail.com", password: "password123", role: "user", isVerified: true },
+        { first_name: "Kevin", last_name: "Lee", username: "kevin", email: "kevin@gmail.com", password: "password123", role: "user", isVerified: true }
+   ])
 
     // Insert categories for each user
     await db.insert(CategoriesTable).values([
