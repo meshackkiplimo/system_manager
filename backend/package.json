@@ -27,11 +27,13 @@
     "@types/bcryptjs": "^3.0.0",
     "@types/express": "^5.0.2",
     "@types/jest": "^29.5.14",
+    "@types/nodemailer": "^6.4.17",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.5.0",
     "drizzle-orm": "^0.43.1",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^7.0.3",
     "pg": "^8.16.0"
   }
 }
