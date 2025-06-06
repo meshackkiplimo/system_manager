@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import { TIUser } from '../drizzle/schema';
+
 import bcrypt from 'bcryptjs';
 import { createUserService, getUserByLoginService } from '../services/auth.service';
+import { TIUser } from '../../types';
 
 export const createUserController = async (req: Request, res: Response) => {
     try {

@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import db from "../drizzle/db";
-import { TIUser, UsersTable } from "../drizzle/schema";
+import {  UsersTable } from "../drizzle/schema";
+import { TIUser } from "../../types";
 
 export const createUserService = async (user: TIUser) => {
     const newUser = await db.insert(UsersTable).values(user).returning();
@@ -13,6 +14,8 @@ export const getUserByLoginService = async (user: TIUser): Promise<TIUser | null
     const result = await db.query.UsersTable.findFirst({
         columns: {
             id: true,
+            first_name: true,
+            last_name: true,
             username: true,
             email: true,
             password: true

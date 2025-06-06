@@ -3,9 +3,12 @@ import { pgTable, serial, varchar, text, timestamp, decimal, boolean, integer } 
 
 export const UsersTable = pgTable('users', {
   id: serial('id').primaryKey(),
+  first_name: varchar('firstname', { length: 50 }).notNull().unique(),
+  last_name: varchar('lastname', { length: 50 }).notNull().unique(),
   username: varchar('username', { length: 50 }).notNull().unique(),
   email: varchar('email', { length: 100 }).notNull().unique(),
   password: varchar('password', { length: 255 }).notNull(),
+  role: varchar('role', { length: 20 }).default('user').notNull(), // 'user' or 'admin'
   
 });
 
@@ -133,17 +136,3 @@ export const PlanRelations = relations(PlansTable, ({ one }) => ({
 
 // Inferred Types
 
-export type TIUser = typeof UsersTable.$inferInsert;
-export type TSUser = typeof UsersTable.$inferSelect;
-export type TICategory = typeof CategoriesTable.$inferInsert;
-export type TSCategory = typeof CategoriesTable.$inferSelect;
-export type TIFinance = typeof FinancesTable.$inferInsert;
-export type TSFinance = typeof FinancesTable.$inferSelect;
-export type TIBudget = typeof BudgetsTable.$inferInsert;
-export type TSBudget = typeof BudgetsTable.$inferSelect;
-export type TITask = typeof TasksTable.$inferInsert;
-export type TSTask = typeof TasksTable.$inferSelect;
-export type TINote = typeof NotesTable.$inferInsert;
-export type TSNote = typeof NotesTable.$inferSelect;
-export type TIPlan = typeof PlansTable.$inferInsert;
-export type TSPlan = typeof PlansTable.$inferSelect;

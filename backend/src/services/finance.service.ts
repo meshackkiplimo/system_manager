@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import db from "../drizzle/db";
-import { FinancesTable, TIFinance } from "../drizzle/schema";
+import { FinancesTable} from "../drizzle/schema";
+import { TIFinance } from "../../types";
 
 
 
