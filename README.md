@@ -117,6 +117,92 @@ The frontend will be available at http://localhost:3000
 - `pnpm start` - Start production server
 - `pnpm lint` - Run ESLint
 
+## Database Schema and Relationships
+
+```
+Users
++--------------------+
+|        id         |
+|     username      |
+|      email        |
+|     password      |
++--------------------+
+         ▲
+         │
+         │ 1:N
+         │
+    +-----------+-----------+-----------+-----------+
+    │           │           │           │           │
+    │           │           │           │           │
+    ▼           ▼           ▼           ▼           ▼
+Categories    Tasks       Notes      Plans     Finances
++--------+  +--------+  +--------+  +--------+ +--------+
+|   id   |  |   id   |  |   id   |  |   id   | |   id   |
+|user_id |  |user_id |  |user_id |  |user_id | |user_id |
+| name   |  | title  |  | title  |  | title  | | type   |
++--------+  |  desc  |  |content |  |  desc  | |amount  |
+    ▲       |dueDate |  |priority|  |startDate| |  desc  |
+    │       |priority|  +--------+  |endDate | |category_|
+    │       +--------+             +--------+ |   id    |
+    │                                        +--------+
+    │                                             ▲
+    │                                             │
+    │              Budgets                        │
+    │           +----------+                      │
+    └-----------|    id    |                      │
+                | user_id  |----------------------┘
+                |category_id|
+                |  amount  |
+                |  period  |
+                |startDate |
+                | endDate  |
+                +----------+
+```
+
+### Table Relationships
+
+1. **Users** - Central entity that owns all other resources
+   - One user can have many categories, tasks, notes, plans, finances, and budgets
+   - Primary key for user authentication and resource ownership
+
+2. **Categories** - Classifies finances and budgets
+   - Belongs to one user (user_id)
+   - Can be linked to multiple finances and budgets
+   - Used for organizing financial transactions and budget planning
+
+3. **Finances** - Tracks income and expenses
+   - Belongs to one user (user_id)
+   - Can be assigned to one category (category_id)
+   - Stores transaction amount, type (income/expense), and date
+
+4. **Budgets** - Sets spending limits by category
+   - Belongs to one user (user_id)
+   - Linked to one category (category_id)
+   - Defines budget period (monthly/yearly) and amount
+
+5. **Tasks** - Manages to-do items
+   - Belongs to one user (user_id)
+   - Includes due date, priority, and completion status
+   - Independent of other entities except user
+
+6. **Notes** - Stores user notes
+   - Belongs to one user (user_id)
+   - Contains title, content, and priority
+   - Independent of other entities except user
+
+7. **Plans** - Manages long-term planning
+   - Belongs to one user (user_id)
+   - Includes start and end dates
+   - Independent of other entities except user
+
+### Key Points for Querying
+
+1. Always join through user_id when querying related data
+2. Use category_id to link finances with their categories
+3. Budget queries can combine with categories and finances for spending analysis
+4. Tasks, notes, and plans are standalone entities only linked to users
+5. All tables include timestamps for tracking creation/updates
+
 ## API Routes
 
 The backend provides the following main API endpoints:
