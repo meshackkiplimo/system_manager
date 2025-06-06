@@ -1,6 +1,7 @@
 
 import { Express } from "express"
-import { getAllFinancesController } from "../controllers/finance.controller"
+import { getAllFinancesController, getFinanceByIdController } from "../controllers/finance.controller"
+import { getOneControllerById } from "@/controllers/category.controller"
 
 
 
@@ -17,6 +18,15 @@ export const finance = (app:Express)  =>{
                 next(error)
             
            }
+        }
+    )
+    app.route("/finances/:id").get(
+        async (req,res,next) => {
+            try {
+                await getFinanceByIdController(req,res)
+            } catch (error) {
+                next(error)
+            }
         }
     )
 }

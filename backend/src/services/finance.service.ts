@@ -14,7 +14,7 @@ export const createFinanceService = async (finance:TIFinance) :Promise < TIFinan
     
 }
 
-export const getFinanceByIdService = async (id:string) => {
+export const getFinanceByIdService = async (id:number) => {
     const oneFinance = await db.query.FinancesTable.findFirst({
         columns:{
             id:true,
@@ -29,7 +29,7 @@ export const getFinanceByIdService = async (id:string) => {
         },
         where: sql`${FinancesTable.id}=${id}`
     })
-    return oneFinance || null;
+    return oneFinance ;
 }
 
 export const getAllFinancesService = async () => {

@@ -1,5 +1,5 @@
 
-import { createFinanceService, getAllFinancesService } from "../services/finance.service"
+import { createFinanceService, getAllFinancesService, getFinanceByIdService } from "../services/finance.service"
 import { Request, Response } from "express";
 
 
@@ -49,3 +49,25 @@ export const getAllFinancesController = async (req: Request, res: Response) => {
         
     }
 }
+
+export const getFinanceByIdController = async (req: Request, res: Response) => {
+   
+    try {
+         const id = parseInt(req.params.id);
+        const finance = await getFinanceByIdService(id);
+        if (!finance) {
+            return res.status(404).json({ message: "Finance not found" });
+        }
+        res.status(200).json({
+            message: "Finance retrieved successfully",
+            data: finance
+        });
+
+        
+    } catch (error) {
+        console.error("Error in getFinanceByIdController:", error);
+        res.status(500).json({ message: "Internal Server Error" });
+        
+    }
+}
+
