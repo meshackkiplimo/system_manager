@@ -4,9 +4,9 @@ import {
     CategoriesTable,
     BudgetsTable,
     FinancesTable,
-    TICategory,
-    TSCategory
+    
 } from "../drizzle/schema";
+import { TICategory } from "../../types";
 
 
 export const createCategoriesService = async (categories:TICategory) => {

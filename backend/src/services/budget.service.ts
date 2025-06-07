@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import db from "../drizzle/db";
-import { BudgetsTable, TIBudget, TICategory } from "../drizzle/schema";
+import { BudgetsTable} from "../drizzle/schema";
+import { TIBudget } from "../../types";
 
 
 
@@ -55,6 +56,21 @@ export const getAllBudgetsService = async () => {
             userId: true,
             categoryId: true
 
+
+        },
+        with:{
+            category:{
+                columns:{
+                    id:true,
+                    name:true
+                }
+            },
+            user: {
+                columns: {
+                    id: true,
+                    username: true
+                }
+            }
 
         }
 
