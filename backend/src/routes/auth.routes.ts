@@ -1,5 +1,5 @@
 import { Express } from "express";
-import { createUserController, loginUserController } from "../controllers/auth.controller";
+import { createUserController, loginUserController, verifyCodeController } from "../controllers/auth.controller";
 
 
 
@@ -31,6 +31,15 @@ export const user = (app:Express)=>{
             
         }
 
+    )
+    app.route("/auth/verify").post(
+        async (req,res,next) => {
+            try {
+              await verifyCodeController(req, res);
+            } catch (error) {
+                next(error);
+            }
+        }
     )
 
 }

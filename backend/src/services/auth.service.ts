@@ -24,3 +24,12 @@ export const getUserByLoginService = async (user: TIUser): Promise<TIUser | null
     });
     return result || null;
 }
+
+export const updateVerificationStatus = async (email:string,isVerified:boolean) => {
+    const updatedUser  = await db.update(UsersTable)
+        .set({ isVerified: isVerified })
+        .where(sql`${UsersTable.email} = ${email}`)
+        .returning();
+    return updatedUser[0] || null;
+    
+}

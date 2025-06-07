@@ -9,6 +9,8 @@ import { getOneControllerById } from "@/controllers/category.controller"
 
 export const finance = (app:Express)  =>{
     app.route("/finances").get(
+        
+        
         async (req,res,next) => {
            try {
              await getAllFinancesController(req,res)
