@@ -25,8 +25,20 @@ export const getFinanceByIdService = async (id:number) => {
             date:true,
             description:true,
             categoryId:true
-
-
+        },
+        with: {
+            category: {
+                columns: {
+                    id: true,
+                    name: true
+                }
+            },
+            user: {
+                columns: {
+                    id: true,
+                    username: true
+                }
+            }
         },
         where: sql`${FinancesTable.id}=${id}`
     })
@@ -44,9 +56,21 @@ export const getAllFinancesService = async () => {
             date: true,
             description: true,
             categoryId: true
+        },
+        with: {
+            category: {
+                columns: {
+                    id: true,
+                    name: true
+                }
+            },
+            user: {
+                columns: {
+                    id: true,
+                    username: true
+                }
+            }
         }
-
-
     })
     return allFinances || [];
 }
