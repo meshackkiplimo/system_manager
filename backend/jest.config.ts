@@ -5,6 +5,9 @@ const config: Config = {
   testEnvironment: 'node',
   verbose: true,
   testMatch: ['**/__tests__/**/*.test.ts'],
+    collectCoverage: true,
+    coverageDirectory: 'coverage',
+    
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
