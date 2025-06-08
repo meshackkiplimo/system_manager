@@ -1,6 +1,7 @@
 import { sql } from "drizzle-orm";
 import db from "../drizzle/db";
-import { TasksTable, TITask } from "../drizzle/schema";
+import { TasksTable } from "../drizzle/schema";
+import { TITask } from "../../types";
 
 
 
@@ -44,4 +45,25 @@ export const getAllTasksService = async () => {
         }
     });
     return tasks || [];
+}
+
+export const updateTaskService = async (id: string, task: Partial<TITask>) => {
+
+    const updatedTask = await db
+        .update(TasksTable)
+        .set(task)
+        .where(sql`${TasksTable.id}=${id}`)
+        .returning();
+    
+    return updatedTask[0] || null;
+
+}
+
+export const deleteTaskService = async (id: string) => {
+    const deletedTask = await db
+        .delete(TasksTable)
+        .where(sql`${TasksTable.id}=${id}`)
+        .returning();
+    
+    return deletedTask[0] || null;
 }
