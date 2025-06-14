@@ -16,7 +16,7 @@ export default function Navbar() {
           </Link>
 
           {/* Navigation Links */}
-          <div className="hidden md:flex space-x-4">
+          <div className="hidden md:flex items-center space-x-4">
             <Link 
               href="/dashboard" 
               className={`px-4 py-2 rounded-md transition-colors ${
@@ -48,6 +48,24 @@ export default function Navbar() {
               }`}
             >
               Notes
+            </Link>
+            <Link
+              href="/budget"
+              className={`px-4 py-2 rounded-md transition-colors ${
+                pathname === '/budget' ? 'bg-blue-700' : 'hover:bg-blue-700'
+              }`}
+            >
+              Budget
+            </Link>
+          </div>
+
+          {/* Account Button */}
+          <div className="hidden md:block">
+            <Link
+              href="/account"
+              className="bg-white text-blue-600 px-4 py-2 rounded-md hover:bg-blue-50 transition-colors"
+            >
+              Account
             </Link>
           </div>
 

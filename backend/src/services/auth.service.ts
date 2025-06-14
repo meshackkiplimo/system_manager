@@ -22,7 +22,11 @@ export const getUserByLoginService = async (user: TIUser): Promise<TIUser | null
         },
         where: sql`${UsersTable.email} = ${email}`
     });
-    return result || null;
+    if (!result) {
+        throw new Error("User not found"  ); ;
+        
+    }
+    return result;
 }
 
 export const updateVerificationStatus = async (email:string,isVerified:boolean) => {

@@ -1,7 +1,7 @@
-import db from "../../drizzle/db"
+import db from "../../src/drizzle/db"
 import { createUserService, getUserByLoginService } from "@/services/auth.service"
 
-jest.mock("../../drizzle/db", () => ({
+jest.mock("../../src/drizzle/db", () => ({
     insert: jest.fn(),
     query: {
         UsersTable: {
@@ -33,6 +33,21 @@ describe("Auth Service", () => {
         const result = await createUserService(user);
         expect(result).toEqual(insertedUser);
     })
+    it("should throw an error if user creation fails", async () => {
+        const user = {
+            first_name: "Jane",
+            last_name: "Doe",
+            username: "janedoe",
+            email: "nnn@gmail.com",
+            password: "password123"
+        };
+        (db.insert as jest.Mock).mockReturnValue({
+            values: jest.fn().mockReturnValue({
+                returning: jest.fn().mockRejectedValue(new Error("User creation failed"))
+            })
+        })
+        
+    })
 
     it("should login a user successfully and return user data", async () => {
         const credentials = {
@@ -58,21 +73,7 @@ describe("Auth Service", () => {
         expect(result).toEqual(foundUser);
     })
 
-    it("should return null if user not found during login", async () => {
-        const credentials = {
-            email: "nonexistent@gmail.com",
-            password: "password123",
-            first_name: "Non",
-            last_name: "Existent",
-            username: "nonexistent"
-            
-        };
-
-        (db.query.UsersTable.findFirst as jest.Mock).mockResolvedValue(null);
-
-        const result = await getUserByLoginService(credentials);
-        expect(result).toBeNull();
-    })
+    
 
     it("should throw an error if user already exists", async () => {
         const user = {
@@ -91,4 +92,18 @@ describe("Auth Service", () => {
 
         await expect(createUserService(user)).rejects.toThrow("User already exists");
     })
+    it("should throw an error if user not found during login", async () => {
+        const credentials = {
+            email: "meshqck@gmail.com",
+            password: "password123",
+            first_name: "Mesh",
+            last_name: "Qck",
+            username: "meshqck"
+        };
+        (db.query.UsersTable.findFirst as jest.Mock).mockResolvedValue(null);
+        await expect(getUserByLoginService(credentials)).rejects.toThrow("User not found");
+    }
+    )  
+
+
 })
