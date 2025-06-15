@@ -69,6 +69,19 @@ afterAll(async () => {
             expect(response.status).toBe(400);
             expect(response.body).toHaveProperty('message', 'Email already exists');
         });
+        it("should not register a user with missing fields", async () => {
+            const response = await request(app)
+                .post('/auth/register')
+                .send({
+                    first_name: "Incomplete",
+                    last_name: "User",
+                    // Missing username and email
+                    password: "password123"
+                });
+
+            expect(response.status).toBe(500);
+            expect(response.body).toHaveProperty('message', 'Internal Server Error');
+        });
 
     })
 
