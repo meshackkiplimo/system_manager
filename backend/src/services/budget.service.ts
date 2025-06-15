@@ -10,8 +10,8 @@ import { TIBudget } from "../../types";
 
 export const createBudgetService = async (budget:TIBudget) :Promise<TIBudget |null > => {
 
-    const newBidget = await db.insert(BudgetsTable).values(budget).returning();
-    const newBudgetData = newBidget[0];
+    const newBudget = await db.insert(BudgetsTable).values(budget).returning();
+    const newBudgetData = newBudget[0];
     return newBudgetData;
     
 

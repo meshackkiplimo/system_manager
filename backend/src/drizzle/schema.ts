@@ -33,8 +33,8 @@ export const FinancesTable = pgTable('finances', {
 
 export const BudgetsTable = pgTable('budgets', {
   id: serial('id').primaryKey(),
-  userId: serial('user_id').references(() => UsersTable.id).notNull(),
-  categoryId: serial('category_id').references(() => CategoriesTable.id),
+  userId: integer('user_id').references(() => UsersTable.id).notNull(),
+  categoryId: integer('category_id').references(() => CategoriesTable.id),
   amount: decimal('amount', { precision: 10, scale: 2 }).notNull(),
   period: varchar('period', { length: 20 }).notNull(), // e.g., 'monthly', 'yearly'
   startDate: timestamp('start_date').notNull(),
