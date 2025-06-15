@@ -1,6 +1,6 @@
 
 import { Express } from "express"
-import { getAllFinancesController, getFinanceByIdController } from "../controllers/finance.controller"
+import { createFinanceController, getAllFinancesController, getFinanceByIdController } from "../controllers/finance.controller"
 import { getOneControllerById } from "@/controllers/category.controller"
 
 
@@ -26,6 +26,16 @@ export const finance = (app:Express)  =>{
         async (req,res,next) => {
             try {
                 await getFinanceByIdController(req,res)
+            } catch (error) {
+                next(error)
+            }
+        }
+    )
+    // create finance
+    app.route("/finances").post(
+        async (req,res,next) => {
+            try {
+                await createFinanceController(req,res)
             } catch (error) {
                 next(error)
             }
