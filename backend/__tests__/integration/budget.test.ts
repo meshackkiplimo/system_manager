@@ -99,4 +99,16 @@ describe("Budget API", () => {
         expect(Array.isArray(res.body.budgets)).toBe(true);
         expect(res.body.budgets.length).toBeGreaterThan(0);
     });
+    it("should get a budget by ID", async () => {
+        if (!budgetId) {
+            throw new Error("No budget ID available for testing");
+        }
+        
+        const res = await request(app)
+            .get(`/budgets/${budgetId}`)
+            // .set('Authorization', `Bearer ${userId}`);
+        
+        expect(res.status).toBe(200);
+        
+    });
 });

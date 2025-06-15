@@ -32,4 +32,18 @@ export const budget = (app:Express) =>{
             
         }
     )
+    //get budget by id
+    app.route("/budgets/:id").get(
+        // isAuthenticated,
+        async (req,res,next) => {
+            try {
+                await getAllBudgetsController(req,res)
+                
+            } catch (error) {
+                next(error)
+                
+            }
+            
+        }
+    )
 }
