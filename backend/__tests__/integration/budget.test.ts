@@ -90,4 +90,13 @@ describe("Budget API", () => {
             throw error;
         }
     });
+    it("should get all budgets", async () => {
+        const res = await request(app)
+            .get('/budgets')
+            // .set('Authorization', `Bearer ${userId}`);
+        
+        expect(res.status).toBe(200);
+        expect(Array.isArray(res.body.budgets)).toBe(true);
+        expect(res.body.budgets.length).toBeGreaterThan(0);
+    });
 });
