@@ -69,4 +69,12 @@ describe("Finance API", () => {
         expect(financeResponse[0].description).toBe(testFinance.description);
         expect(financeResponse[0].date).toEqual(testFinance.date);
     });
+
+    it("should get all finance records ", async () => {
+        const finances = await db.select().from(FinancesTable).where(eq(FinancesTable.userId, userId));
+        
+        expect(finances.length).toBeGreaterThan(0);
+        expect(finances[0]).toHaveProperty("id");
+        expect(finances[0].userId).toBe(userId);
+    });
 });
