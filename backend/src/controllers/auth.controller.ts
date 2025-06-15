@@ -14,8 +14,16 @@ const generateVerificationCode = ():string => {
 export const createUserController = async (req: Request, res: Response) => {
     try {
         const newUser: TIUser = req.body;
-        const password = newUser.password;
         
+        // Check for existing email first
+        const existingUser = await getUserByLoginService(newUser);
+        if (existingUser) {
+            res.status(400).json({ message: "Email already exists" });
+            return;
+        }
+
+        // Hash password and create user
+        const password = newUser.password;
         newUser.password = await bcrypt.hashSync(password, 10);
         const createUser = await createUserService(newUser);
         

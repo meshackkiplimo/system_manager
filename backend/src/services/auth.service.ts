@@ -18,15 +18,13 @@ export const getUserByLoginService = async (user: TIUser): Promise<TIUser | null
             last_name: true,
             username: true,
             email: true,
-            password: true
+            password: true,
+            role: true,
+            isVerified: true
         },
         where: sql`${UsersTable.email} = ${email}`
     });
-    if (!result) {
-        throw new Error("User not found"  ); ;
-        
-    }
-    return result;
+    return result || null;
 }
 
 export const updateVerificationStatus = async (email:string,isVerified:boolean) => {
