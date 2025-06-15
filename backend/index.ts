@@ -11,7 +11,7 @@ import { plan } from '@/routes/plan.route';
 
 dotenv.config();
 
-const app = express();
+export const app = express();
 const port = process.env.PORT 
 
 // Basic middleware
