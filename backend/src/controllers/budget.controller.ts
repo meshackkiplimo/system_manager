@@ -6,26 +6,50 @@ import { createBudgetService, getAllBudgetsService, getBudgetByIdService, update
 
 
 
-export const createBudgetController = async (req:Request,res:Response) => {
-
+export const createBudgetController = async (req: Request, res: Response) => {
     try {
-        const budget= req.body
+        const budget = req.body;
+        
+        // Log incoming request
+        console.log('Create budget request:', {
+            ...budget,
+            startDate: budget.startDate,
+            endDate: budget.endDate
+        });
+
+        // Validate required fields
+        if (!budget.userId || !budget.amount || !budget.period || !budget.startDate) {
+            const missingFields = [];
+            if (!budget.userId) missingFields.push('userId');
+            if (!budget.amount) missingFields.push('amount');
+            if (!budget.period) missingFields.push('period');
+            if (!budget.startDate) missingFields.push('startDate');
+
+            console.error('Missing required fields:', missingFields);
+            return res.status(400).json({
+                message: "Budget creation failed",
+                error: `Missing required fields: ${missingFields.join(', ')}`
+            });
+        }
+
         const newBudget = await createBudgetService(budget);
         if (!newBudget) {
-            res.status(400).json({ message: "Budget creation failed" });
-            return;
+            console.error('Budget creation failed in service');
+            return res.status(400).json({ message: "Budget creation failed in service" });
         }
+
+        console.log('Budget created successfully:', newBudget);
         res.status(201).json({
             message: "Budget created successfully",
             budget: newBudget
         });
-        
     } catch (error) {
         console.error("Error in createBudgetController:", error);
-        res.status(500).json({ message: "Internal Server Error" });
-        
+        res.status(500).json({
+            message: "Internal Server Error",
+            error: error instanceof Error ? error.message : String(error)
+        });
     }
-    
 }
 
 

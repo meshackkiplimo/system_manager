@@ -72,7 +72,7 @@ describe("Budget API", () => {
             const res = await request(app)
                 .post('/budgets')
                 .send(budget)
-                // .set('Authorization', `Bearer ${userId}`);
+                .set('Authorization', `Bearer ${userId}`);
             
             console.log('Response:', res.body); // Debug logging
             

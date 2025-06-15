@@ -8,13 +8,35 @@ import { TIBudget } from "../../types";
 
 
 
-export const createBudgetService = async (budget:TIBudget) :Promise<TIBudget |null > => {
+export const createBudgetService = async (budget: TIBudget): Promise<TIBudget | null> => {
+    try {
+        // Validate required fields
+        if (!budget.userId || !budget.amount || !budget.period || !budget.startDate) {
+            console.error('Missing required fields:', { budget });
+            return null;
+        }
 
-    const newBudget = await db.insert(BudgetsTable).values(budget).returning();
-    const newBudgetData = newBudget[0];
-    return newBudgetData;
-    
+        // Log the incoming budget data
+        console.log('Creating budget with data:', {
+            ...budget,
+            startDate: budget.startDate instanceof Date ? budget.startDate.toISOString() : budget.startDate,
+            endDate: budget.endDate instanceof Date ? budget.endDate.toISOString() : budget.endDate
+        });
 
+        const newBudget = await db.insert(BudgetsTable).values({
+            ...budget,
+            // Ensure dates are properly formatted
+            startDate: budget.startDate instanceof Date ? budget.startDate : new Date(budget.startDate),
+            endDate: budget.endDate instanceof Date ? budget.endDate : budget.endDate ? new Date(budget.endDate) : null
+        }).returning();
+
+        const newBudgetData = newBudget[0];
+        console.log('Created budget:', newBudgetData);
+        return newBudgetData;
+    } catch (error) {
+        console.error('Error in createBudgetService:', error);
+        throw error;
+    }
 }
 
 export const getBudgetByIdService = async(id:string)=>{
